@@ -1,0 +1,6 @@
+﻿dist
+node_modules
+.env
+package-lock.json
+/.idea
+contracts/build
