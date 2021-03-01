@@ -19,7 +19,22 @@ export class AppService implements OnModuleInit {
 			this.logger.log(`Бот запущен на следующих серверах: ${this.client.guilds.cache.array().join(', ')}`);
 		});
 		this.client.on('message', (message) => {
-			this.logger.log(`Пользователь ${message.author.username} написал: ${message.content}`, message.guild?.name);
+			switch (message.channel.type) {
+				case 'dm':
+					this.logger.log(
+						`Пользователь ${message.author.username} написал: ${message.content}`,
+						'Личное сообщение'
+					);
+					break;
+				case 'text':
+					this.logger.log(
+						`Пользователь ${message.author.username} написал: ${message.content}`,
+						message.guild?.name
+					);
+
+				default:
+					break;
+			}
 		});
 	}
 }
