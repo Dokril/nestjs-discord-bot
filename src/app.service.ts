@@ -9,8 +9,8 @@ export class AppService implements OnModuleInit {
 	logger = new Logger('Discord bot');
 	private readonly client = new Client();
 
-	onModuleInit() {
-		this.client.login(this.configService.get('TOKEN'));
+	async onModuleInit() {
+		await this.client.login(this.configService.get('TOKEN'));
 		this.start();
 	}
 
