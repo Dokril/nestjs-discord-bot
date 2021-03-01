@@ -1,20 +1,25 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 
 import { Client } from 'discord.js';
+import { ConfigService } from 'nestjs-dotenv';
 
 @Injectable()
 export class AppService implements OnModuleInit {
-	constructor() {}
+	constructor(private configService: ConfigService) {}
+	logger = new Logger('Discord bot');
+	private readonly client = new Client();
 
 	onModuleInit() {
+		this.client.login(this.configService.get('TOKEN'));
 		this.start();
 	}
 
 	start() {
-		const client = new Client();
-		client.login('ODE1ODYwMTkyMjc2NjQzODQw.YDyjAw.60LrBDFE8MDFmw5_7rTa-EUa9IU');
-		client.on('message', (message) => {
-			console.log(message.author.username, message.content);
+		this.client.on('ready', () => {
+			this.logger.log(`Бот запущен на следующих серверах: ${this.client.guilds.cache.array().join(', ')}`);
+		});
+		this.client.on('message', (message) => {
+			this.logger.log(`Пользователь ${message.author.username} написал: ${message.content}`, message.guild?.name);
 		});
 	}
 }
