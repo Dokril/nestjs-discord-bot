@@ -2,8 +2,6 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"skipLibCheck": true,
-		"strict": true,
-		"strictPropertyInitialization": false,
 		"declaration": true,
 		"removeComments": true,
 		"emitDecoratorMetadata": true,

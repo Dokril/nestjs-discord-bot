@@ -5,13 +5,16 @@
   "author": "Dmitriy Petrov <floplopru@gmail.com>",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug=5478 --watch",
+    "start:debug": "nest start --debug=1024 --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -20,15 +23,21 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
+    "@discordjs/opus": "^0.4.0",
     "@nestjs/common": "^7.5.2",
     "@nestjs/core": "^7.5.2",
     "@nestjs/platform-express": "^7.5.2",
-    "discord.js": "^12.5.1",
+    "discord-nestjs": "^1.1.10",
+    "discord-tts": "^1.0.3",
+    "discord.js": "12.5.1",
+    "ffmpeg-static": "^4.2.7",
     "nestjs-dotenv": "^1.2.1",
     "nestjs-rmq": "^2.0.5",
+    "opusscript": "0.0.8",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.3"
+    "rxjs": "^6.6.3",
+    "ytdl-core": "^4.5.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.2",
@@ -50,6 +59,11 @@
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
   "jest": {
     "moduleFileExtensions": [
       "js",
