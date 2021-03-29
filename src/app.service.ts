@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Message, VoiceChannel, VoiceState } from 'discord.js';
-import { DiscordClientProvider, On, Once, OnCommand } from 'discord-nestjs';
+import { Content, DiscordClientProvider, On, Once, OnCommand } from 'discord-nestjs';
 import { randomInteger } from './common-func';
 import * as discordTTS from 'discord-tts';
+import * as ytdl from 'ytdl-core';
 @Injectable()
 export class AppService {
 	private readonly logger = new Logger(AppService.name);
@@ -16,23 +17,42 @@ export class AppService {
 	}
 
 	@OnCommand({ name: 'random', channelType: ['text'] })
-	async onCommand(message: Message): Promise<void> {
+	async random(message: Message): Promise<void> {
 		await message.reply(randomInteger(1, 1000));
 	}
 
+	@OnCommand({ name: 'yt', channelType: ['text'], isRemovePrefix: true })
+	async yt(message: Message): Promise<void> {
+		await this.startYTSound(message.member.voice.channel, message.content);
+	}
+
+	@OnCommand({ name: 'say', channelType: ['text'], isRemovePrefix: true })
+	async say(message: Message): Promise<void> {
+		await this.sendVoiceMessageInChannel(message.member.voice.channel, message.content.replace('!say', ''));
+	}
+
 	@On({ event: 'voiceStateUpdate' })
-	async onVoiceStateUpdate({ member: oldM, channel: oldC }: VoiceState, { member: newM, channel: newC }: VoiceState) {
-		if (!oldC && newC) {
-			this.logger.log('Зашел на ' + newC.name, oldM.user.username);
-			await this.sendVoiceMessage(newC, 'Пришел мой любимый ' + newM.user.username);
-		} else if (!newC) {
-			this.logger.log('Вышел из ' + oldC.name, oldM.user.username);
+	async onVoiceStateUpdate(
+		{ member: oldMemeber, channel: oldChannel }: VoiceState,
+		{ member: newMemeber, channel: newChannel }: VoiceState
+	) {
+		if (!oldChannel && newChannel) {
+			this.logger.log('Зашел на ' + newChannel.name, oldMemeber.user.username);
+			await this.sendVoiceMessageInChannel(newChannel, 'Пришел мой любимый ' + newMemeber.user.username);
+		} else if (!newChannel) {
+			this.logger.log('Вышел из ' + oldChannel.name, oldMemeber.user.username);
 		}
 	}
 
-	async sendVoiceMessage(channel: VoiceChannel, message: string) {
+	async sendVoiceMessageInChannel(channel: VoiceChannel, message: string) {
 		const connection = await channel.join();
 		const dispacher = connection.play(discordTTS.getVoiceStream(message, 'ru-RU'));
+		dispacher.on('finish', () => channel.leave());
+	}
+
+	async startYTSound(channel: VoiceChannel, url: string) {
+		const connection = await channel.join();
+		const dispacher = connection.play(ytdl(url, { filter: 'audioonly' }));
 		dispacher.on('finish', () => channel.leave());
 	}
 }

@@ -1,4 +1,3 @@
-import { RMQModule } from 'nestjs-rmq';
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { DiscordModule } from 'discord-nestjs';
