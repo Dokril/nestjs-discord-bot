@@ -3,7 +3,6 @@
 		"no-var-requires": true,
 		"promise-function-async": true,
 		"await-promise": true,
-		"curly": true,
 		"prefer-for-of": true,
 		"forin": true,
 		"no-console": [

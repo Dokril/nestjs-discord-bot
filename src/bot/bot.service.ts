@@ -1,12 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Message, VoiceChannel, VoiceState } from 'discord.js';
-import { Content, DiscordClientProvider, On, Once, OnCommand } from 'discord-nestjs';
-import { randomInteger } from './common-func';
+import { DiscordClientProvider, On, Once, OnCommand } from 'discord-nestjs';
+import { randomInteger } from '../common-func';
 import * as discordTTS from 'discord-tts';
 import * as ytdl from 'ytdl-core';
+
 @Injectable()
-export class AppService {
-	private readonly logger = new Logger(AppService.name);
+export class BotService {
+	private readonly logger = new Logger(BotService.name);
 	constructor(private readonly discordProvider: DiscordClientProvider) {}
 
 	@Once({ event: 'ready' })

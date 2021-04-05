@@ -1,19 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
-import { DiscordModule } from 'discord-nestjs';
-
+import { ConfigModule } from '@nestjs/config';
+import { BotModule } from './bot/bot.module';
 @Module({
-	imports: [
-		DiscordModule.forRoot({
-			token: 'ODE1ODYwMTkyMjc2NjQzODQw.YDyjAw.60LrBDFE8MDFmw5_7rTa-EUa9IU',
-			commandPrefix: '!',
-			allowCommands: [
-				{
-					name: 'random',
-				},
-			],
-		}),
-	],
-	providers: [AppService],
+	imports: [BotModule, ConfigModule.forRoot()],
 })
 export class AppModule {}

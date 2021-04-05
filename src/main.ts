@@ -5,4 +5,5 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	await app.init();
 }
+// tslint:disable-next-line: no-floating-promises
 bootstrap();
