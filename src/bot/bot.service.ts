@@ -12,9 +12,7 @@ export class BotService {
 
 	@Once({ event: 'ready' })
 	onceReady(): void {
-		this.logger.log(
-			`Бот запущен на следующих серверах: ${this.discordProvider.getClient().guilds.cache.array().join(', ')}`
-		);
+		this.logger.log(`The bot is launched: ${this.discordProvider.getClient().guilds.cache.array().join(', ')}`);
 	}
 
 	@OnCommand({ name: 'random', channelType: ['text'] })
@@ -38,10 +36,10 @@ export class BotService {
 		{ member: newMemeber, channel: newChannel }: VoiceState
 	) {
 		if (!oldChannel && newChannel) {
-			this.logger.log('Зашел на ' + newChannel.name, oldMemeber.user.username);
+			this.logger.log('Join ' + newChannel.name, oldMemeber.user.username);
 			await this.sendVoiceMessageInChannel(newChannel, 'Пришел мой любимый ' + newMemeber.user.username);
 		} else if (!newChannel) {
-			this.logger.log('Вышел из ' + oldChannel.name, oldMemeber.user.username);
+			this.logger.log('Left ' + oldChannel.name, oldMemeber.user.username);
 		}
 	}
 
